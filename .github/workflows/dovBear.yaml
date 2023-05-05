@@ -3,7 +3,7 @@ name: dovBearAssignment
 on:
   push:
     branches:
-      - 'release/v1.0'
+      - 'release/v[1-9].[0-9]+'
 
 jobs:
   build-and-deploy:
