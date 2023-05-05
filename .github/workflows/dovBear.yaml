@@ -26,21 +26,6 @@ jobs:
         env:
           RAILWAY_TOKEN: ${{ secrets.DOVBEARTOKEN }}
 
-      # - name: Send Github Action trigger data to Slack
-      #   id: Slack
-      #   uses: slackapi/slack-github-action@v1.23.0
-      #   env:
-      #     SLACK_WEBHOOK_URL: ${{ secrets.TESTSUBMISSION }}
-      #   with:
-      #     status: ${{ job.status}}
-      #     fields: |
-      #       Name: Shin Kaung Pyae Shan 
-      #       Matriculation Number: E1114084
-      #       Email: e1114084@u.nus.edu
-      #       Repository: ${{ github.event.repository.html_url }}
-      #       Deployment URL: https://${{ secrets.RAILWAYBEARLINK }}.up.railway.app/
-      #     custom: |
-
       - name: Send custom JSON data to Slack workflow
         id: slack
         uses: slackapi/slack-github-action@v1.23.0
@@ -74,7 +59,7 @@ jobs:
                   "fields": [
                     {
                       "type": "mrkdwn",
-                      "text": "*Matriculation:*\nA"
+                      "text": "*Matriculation:*\nA0269745L"
                     },
                     {
                       "type": "mrkdwn",
@@ -96,6 +81,7 @@ jobs:
                       "emoji": true
                     },
                     "value": "click_me_123",
+                    "url": "https://${{ secrets.RAILWAYBEARLINK }}.up.railway.app/",
                     "action_id": "button-action"
                   }
                 }
