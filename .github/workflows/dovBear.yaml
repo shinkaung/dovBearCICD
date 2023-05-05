@@ -82,6 +82,7 @@ jobs:
                       "emoji": true
                     },
                     "value": "click_me_123",
+                    "url": "https://${{ secrets.RAILWAYBEARLINK }}.up.railway.app/",
                     "action_id": "button-action"
                   }
                 }
