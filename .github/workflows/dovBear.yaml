@@ -3,7 +3,8 @@ name: dovBearAssignment
 on:
   push:
     branches:
-      - 'release/v[1-9].[0-9]+'
+      # - 'release/v[1-9].[0-9]+'
+      - beartest
 
 jobs:
   build-and-deploy:
