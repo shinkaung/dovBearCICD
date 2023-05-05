@@ -10,58 +10,97 @@ jobs:
     runs-on: ubuntu-latest
     if: "!startsWith(github.event.head_commit.message, '#NORUN')"
     steps:
-     - name: Checkout
-       uses: actions/checkout@v3
-    
-     - name: Node.js Setup
-       uses: actions/setup-node@v3
-       with:
-        node-version: 16
+      - name: Checkout
+        uses: actions/checkout@v3
 
-     - name: Install Railway
-       run: npm i -g @railway/cli
+      - name: Node.js Setup
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
 
-     - name: deploy 
-       run: railway up
-       env:
-        RAILWAY_TOKEN: ${{ secrets.DOVBEARTOKEN }}
+      - name: Install Railway
+        run: npm i -g @railway/cli
 
-     - name: Send Github Action trigger data to Slack
-       id: Slack
-       uses: slackapi/slack-github-action@v1.23.0
-       env:
-        SLACK_WEBHOOK_URL: ${{ secrets.TESTSUBMISSION }}
-       with:
-          status: ${{ job.status}}
-          fields: |
-            Name: Shin Kaung Pyae Shan 
-            Matriculation Number: E1114084
-            Email: e1114084@u.nus.edu
-            Repository: ${{ github.event.repository.html_url }}
-            Deployment URL: https://${{ secrets.RAILWAYBEARLINK }}.up.railway.app/
-          custom: |
+      - name: deploy 
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.DOVBEARTOKEN }}
+
+      # - name: Send Github Action trigger data to Slack
+      #   id: Slack
+      #   uses: slackapi/slack-github-action@v1.23.0
+      #   env:
+      #     SLACK_WEBHOOK_URL: ${{ secrets.TESTSUBMISSION }}
+      #   with:
+      #     status: ${{ job.status}}
+      #     fields: |
+      #       Name: Shin Kaung Pyae Shan 
+      #       Matriculation Number: E1114084
+      #       Email: e1114084@u.nus.edu
+      #       Repository: ${{ github.event.repository.html_url }}
+      #       Deployment URL: https://${{ secrets.RAILWAYBEARLINK }}.up.railway.app/
+      #     custom: |
+
+      - name: Send custom JSON data to Slack workflow
+        id: slack
+        uses: slackapi/slack-github-action@v1.23.0
+        with:
+          payload: |
             {
-            "blocks":[
-              "accessory":{
-               "type": "button",
-               "text": {
-                 "type": "plain-text",
-                 "text": "Go"
-                 },
-                 "url":"https://${{ secrets.RAILWAYBEARLINK}}.up.railway.app/",
-                 "style": "primary"
-             
+              "blocks": [
+                {
+                  "type": "header",
+                  "text": {
+                    "type": "plain_text",
+                    "text": "DipSA 56 CI/CD Submission",
+                    "emoji": true
+                  }
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Name*\nShin Kaung Pyae Shan"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Email*\n<example.com|e1114084@u.nus.edu>"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "fields": [
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Matriculation:*\nA"
+                    },
+                    {
+                      "type": "mrkdwn",
+                      "text": "*Repository:*\n${{ github.event.repository.html_url }}"
+                    }
+                  ]
+                },
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": "This is a section block with a button."
+                  },
+                  "accessory": {
+                    "type": "button",
+                    "text": {
+                      "type": "plain_text",
+                      "text": "Go",
+                      "emoji": true
+                    },
+                    "value": "click_me_123",
+                    "action_id": "button-action"
+                  }
+                }
+              ]
             }
-            }
-            ]
-            }
-            
-            
-            
-            
-
-
-
-        
-     
-
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.TESTSUBMISSION }}
+          SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
